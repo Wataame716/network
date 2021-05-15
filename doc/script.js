@@ -1,62 +1,66 @@
-function searchArtObjects() {
-    var result_area = document.getElementById('result');
-    result_area.innerHTML = ('');
-    var input = document.getElementById("input").value;
-    var request = new XMLHttpRequest();
-    request.open("GET", `https://collectionapi.metmuseum.org/public/collection/v1/search?q=${input}`);
-    request.addEventListener("load", (event) => {
-        if (event.target.status !== 200) {
-            console.error(`${event.target.status}: ${event.target.statusText}`);
-            return;
-        }
-        var objectsJson = JSON.parse(event.target.responseText);
-        if (!objectsJson.objectIDs) {
-            nullInfo();
-            return;
-        }
-        getArtInfo(objectsJson.objectIDs);
-    });
-    request.addEventListener("error", () => {
-        console.error("Network Error");
-    });
-    request.send();
+const uri = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
+const id = 'sunflower';
+const objectID = 436524
+// const sheet = 'Studio';
+const endpoint = `${uri}/${objectID}`;
+
+const renderJson = (json) => {
+    const studios = json;
+    console.log(studios);
+
+    const studioDiv = document.createElement('div');
+    const studioTitle = document.createElement("span");
+    studioTitle.className = 'studio-title';
+    studioTitle.textContent = studios['title'];
+
+    const studioTitlePhoto = document.createElement("img");
+    studioTitlePhoto.width = 1000;
+    studioTitlePhoto.className = 'studio-photo';
+    studioTitlePhoto.src = studios['primaryImage'];
+    studioDiv.appendChild(studioTitle);
+    studioDiv.appendChild(studioTitlePhoto);
+    document.getElementById('studios').appendChild(studioDiv);
+
+    // studios.forEach(studio => {
+    //     // for (let i = 0; i < 10; i++) {
+    //     const studioDiv = document.createElement('div');
+    //     const studioTitle = document.createElement("span");
+    //     studioTitle.className = 'studio-title';
+    //     studioTitle.textContent = studio[i]['name-ja'];
+    //     const studioTitleEn = document.createElement("span");
+    //     studioTitleEn.className = 'studio-title-en';
+    //     studioTitleEn.textContent = studio[i]['name-en'];
+    //     const studioTitleDescription = document.createElement("p");
+    //     studioTitleDescription.className = 'studio-description';
+    //     studioTitleDescription.textContent = studio[i]['description-ja'];
+    //     const studioTitlePhoto = document.createElement("img");
+    //     studioTitlePhoto.width = 1000;
+    //     studioTitlePhoto.className = 'studio-photo';
+    //     studioTitlePhoto.src = studio[i]['photo1'];
+    //     studioDiv.appendChild(studioTitle);
+    //     studioDiv.appendChild(studioTitleEn);
+    //     studioDiv.appendChild(studioTitleDescription);
+    //     studioDiv.appendChild(studioTitlePhoto);
+    //     document.getElementById('studios').appendChild(studioDiv);
+    //     // }
+    // });
+    // document.getElementById('result').textContent = JSON.stringify(json, null, 2);
 }
 
-function getArtInfo(objectIDs) {
-    if (objectIDs.length > 101) {
-        searchInDetail();
-        return;
+const getData = async () => {
+    try {
+        const response = await fetch(endpoint);
+        if (response.ok) {
+            const jsonResponse = await response.json();
+            console.log(jsonResponse);
+            renderJson(jsonResponse);
+            console.log("HELLO");
+        }
     }
-    objectIDs.sort(function (a, b) {
-        if (a < b) return -1;
-        if (a > b) return 1;
-        return 0;
-    });
-    for (var i = 0; i < objectIDs.length; i++) {
-        var request = new XMLHttpRequest();
-        request.open("GET", `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectIDs[i]}`);
-        request.addEventListener("load", (event) => {
-            if (event.target.status !== 200) {
-                console.error(`${event.target.status}: ${event.target.statusText}`);
-                return;
-            }
-            var objectJson = JSON.parse(event.target.responseText);
-            insertArtInfo(objectJson);
-        });
-        request.addEventListener("error", () => {
-            console.error("Network Error");
-        });
-        request.send();
+    catch (error) {
+        console.log(error);
     }
 }
 
-function insertArtInfo(objectJson) {
-    var result = document.getElementById('result');
-    result.insertAdjacentHTML('afterbegin',
-        `<div class="art_area col-md-4">
-      <span class="art_img"><img src="${objectJson.primaryImage}"></span></br>
-      <span class="art_title">タイトル：${objectJson.title}</span></br>
-      <span class="art_artist_name">製作者：${objectJson.artistDisplayName}</span></br>
-      <span class="art_culture">関連する国：${objectJson.culture}</span></br>
-    </div>`);
-}
+getData();
+
