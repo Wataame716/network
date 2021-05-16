@@ -20,16 +20,19 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../script/script.js"></script>
+
     <title>検索ページ</title>
 </head>
 
 <body>
     <h1>Department of Industrial Art</h1>
     <a href="index_selected.html">Go To Selected</a>
-    <h2>Faculty of Systems Design, Tokyo Metropolitan University</h2>
-    <div>Google SheetのデータをJSONで取得できるAPIを使ってサイトを構築しています。</div>
+    <form id="form1" action="#">
+        <input type="text" id="input-message">
+        <input type="button" onclick="showMessage()" value="送信">
+    </form>
     <div id="Top"></div>
     <!-- <pre id="result"></pre> -->
 </body>

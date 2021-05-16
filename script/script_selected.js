@@ -1,9 +1,22 @@
 const uri = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
 const id = 'sunflower';
-const objectID = 437980
+// const objectID = 437980
 // const sheet = 'Studio';
-const endpoint = `${uri}/${objectID}`;
 // const endpoint = "https://collectionapi.metmuseum.org/public/collection/v1/objects/436534";
+
+const showMessage = () => {
+    const textbox = document.getElementById("input-message");
+    console.log("tes");
+    console.log(textbox);
+    const inputValue = textbox.value;
+    getData(inputValue);
+
+
+    // //テキストボックスの値を使って、出力するメッセージを生成する
+    // const output = "入力された内容は「" + inputValue + "」です。";
+    // //出力用のp要素にメッセージを表示
+    // document.getElementById("output-message").innerHTML = output;
+}
 
 
 const renderJson = (json) => {
@@ -49,8 +62,10 @@ const renderJson = (json) => {
     // document.getElementById('result').textContent = JSON.stringify(json, null, 2);
 }
 
-const getData = async () => {
+const getData = async (inputValue) => {
     try {
+        const endpoint = `${uri}/${inputValue}`;
+        console.log(endpoint);
         const response = await fetch(endpoint);
         if (response.ok) {
             const jsonResponse = await response.json();
@@ -64,5 +79,5 @@ const getData = async () => {
     }
 }
 
-getData();
+// getData();
 
