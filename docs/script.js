@@ -26,6 +26,7 @@ const renderJson = (json) => {
     document.getElementById('Top').appendChild(studioDiv);
     // });
 
+
     // studios.forEach(studio => {
     //     // for (let i = 0; i < 10; i++) {
     //     const studioDiv = document.createElement('div');
