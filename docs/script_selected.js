@@ -1,30 +1,27 @@
-const uri = 'https://collectionapi.metmuseum.org/public/collection/v1/search?q=';
+const uri = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
 const id = 'sunflower';
-const objectID = 436524
+const objectID = 437980
 // const sheet = 'Studio';
-const endpoint = `${uri}${id}`;
-
-const uri2 = 'https://collectionapi.metmuseum.org/public/collection/v1/objects';
+const endpoint = `${uri}/${objectID}`;
+// const endpoint = "https://collectionapi.metmuseum.org/public/collection/v1/objects/436534";
 
 
 const renderJson = (json) => {
     const studios = json;
-    // console.log(studios);
+    console.log(studios);
 
-    // studios.forEach(studio => {
     const studioDiv = document.createElement('div');
-    const studioTitle = document.createElement("p");
+    const studioTitle = document.createElement("span");
     studioTitle.className = 'studio-title';
     studioTitle.textContent = studios['title'];
 
     const studioTitlePhoto = document.createElement("img");
-    studioTitlePhoto.width = 100;
+    studioTitlePhoto.width = 1000;
     studioTitlePhoto.className = 'studio-photo';
     studioTitlePhoto.src = studios['primaryImage'];
     studioDiv.appendChild(studioTitle);
     studioDiv.appendChild(studioTitlePhoto);
-    document.getElementById('Top').appendChild(studioDiv);
-    // });
+    document.getElementById('studios').appendChild(studioDiv);
 
     // studios.forEach(studio => {
     //     // for (let i = 0; i < 10; i++) {
@@ -57,35 +54,12 @@ const getData = async () => {
         const response = await fetch(endpoint);
         if (response.ok) {
             const jsonResponse = await response.json();
-            console.log(jsonResponse.objectIDs);
-            jsonResponse.objectIDs.forEach(ID => {
-                console.log(`ID : ${ID}`);
-                getData2(ID);
-            });
-            // renderJson(jsonResponse.objectIDs);
-            // console.log("HELLO");
-        }
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-
-const getData2 = async (objectID) => {
-    try {
-        const endpoint2 = `${uri2}/${objectID}`;
-        console.log(`endpoint2 =  ${endpoint2}`)
-        const response2 = await fetch(endpoint2);
-        console.log(response2)
-        if (response2.ok) {
-            const jsonResponse2 = await response2.json();
-            // console.log(jsonResponse);
-            renderJson(jsonResponse2);
+            console.log(jsonResponse);
+            renderJson(jsonResponse);
             console.log("HELLO");
         }
     }
     catch (error) {
-        console.log("BAD");
         console.log(error);
     }
 }
