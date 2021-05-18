@@ -108,3 +108,27 @@ const getData2 = async (objectID) => {
 
 // getData();
 
+
+const load_func = function () {
+    console.log(document);
+    const textarea = document.getElementById("input-message");
+    console.log(textarea);
+    textarea.addEventListener("keydown", function (e) {
+        if (e.code === 'Enter') {
+            // console.log('nisituzi')
+            showMessage();
+        }
+    })
+
+
+    const button = document.getElementById("push");
+    button.addEventListener("click", function (e) {
+        showMessage();
+    })
+}
+
+console.log(document);
+
+window.addEventListener('load', function () {
+    load_func()
+})
